@@ -20,6 +20,24 @@ let verificarToken = (req, res, next) => {
     });
 };
 
+let verificarAdminRole = (req, res, next) => {
+
+    let usuario = req.usuario;
+
+    if (usuario.role === 'ADMIN_ROLE') {
+        next();
+    } else {
+        res.json({
+            ok: false,
+            err: {
+                message: 'No tiene permiso para hacer esta accion'
+            }
+        })
+    }
+
+};
+
 module.exports = {
-    verificarToken
+    verificarToken,
+    verificarAdminRole
 }
