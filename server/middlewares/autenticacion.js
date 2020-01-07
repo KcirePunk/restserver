@@ -37,7 +37,27 @@ let verificarAdminRole = (req, res, next) => {
 
 };
 
+let verificarTokenImg = (req, res, next) => {
+    let token = req.query.token;
+
+    wt.verify(token, process.env.SEED, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({
+                ok: false,
+                err: {
+                    message: 'Token no valido'
+                }
+            });
+        }
+
+        req.usuario = decoded.usuario;
+        next();
+    });
+
+}
+
 module.exports = {
     verificarToken,
-    verificarAdminRole
+    verificarAdminRole,
+    verificarTokenImg
 }
